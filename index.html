@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="INVA — offline-first inventory and transaction manager by MD. Ikramul Islam Siddique Porosh">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>INVA — Inventory Manager</title>
+</head>
+<body>
+<div id="app" class="app-shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark" aria-hidden="true"><span>IN</span></div><div><strong>INVA</strong><small>Inventory Vault · Offline-first</small></div></div>
+    <div class="top-actions"><button class="btn ghost" id="backupBtn">Backup</button><button class="btn ghost" id="restoreBtn">Restore</button><button class="btn danger-outline" id="clearBtn">Clear data</button></div>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <button class="nav-item active" data-view="dashboard">Dashboard</button>
+    <button class="nav-item" data-view="products">Products</button>
+    <button class="nav-item" data-view="reports">Reports</button>
+    <button class="nav-item" data-view="settings">Settings</button>
+  </nav>
+
+  <main>
+    <section id="view-dashboard" class="view active">
+      <div class="page-head"><div><h1>Dashboard</h1><p>Manage product tabs and their transactions locally.</p></div><button class="btn primary" id="dashboardAddProduct">+ Add Product</button></div>
+      <div class="stats-grid"><article class="stat-card"><span>Products</span><strong id="statProducts">0</strong></article><article class="stat-card"><span>Transactions</span><strong id="statTransactions">0</strong></article><article class="stat-card"><span>Total Spent</span><strong id="statSpent">0</strong></article></div>
+      <div class="panel"><div class="panel-head"><h2>Products</h2><input id="dashboardProductSearch" class="input compact" placeholder="Search products"></div><div id="dashboardProducts" class="product-grid"></div></div>
+    </section>
+
+    <section id="view-products" class="view">
+      <div class="page-head"><div><h1>Products</h1><p>Each product has an independent transaction sheet.</p></div><button class="btn primary" id="addProductBtn">+ Add Product</button></div>
+      <div class="product-toolbar"><input id="productSearch" class="input" placeholder="Search products"><button class="btn" id="renameProductBtn">Rename selected</button><button class="btn danger-outline" id="deleteProductBtn">Delete selected</button></div>
+      <div id="productTabs" class="product-tabs" role="tablist" aria-label="Products"></div>
+      <div id="productWorkspace"></div>
+    </section>
+
+    <section id="view-reports" class="view">
+      <div class="page-head"><div><h1>Reports</h1><p>Filter transactions across one or many products.</p></div><button class="btn primary" id="exportFilteredBtn">Export filtered XLSX</button></div>
+      <div class="panel filter-panel"><div class="filter-grid"><label>Products<select id="reportProducts" multiple size="5"></select></label><label>From date<input id="reportFrom" type="date"></label><label>To date<input id="reportTo" type="date"></label><label>Buyer search<input id="reportBuyer" class="input" placeholder="Buyer contains..."></label></div><div class="filter-actions"><button class="btn primary" id="generateReportBtn">Generate Report</button><button class="btn" id="reportAllBtn">Select all products</button><button class="btn" id="reportClearBtn">Clear filters</button></div></div>
+      <div class="panel"><div class="panel-head"><h2>Report</h2><div id="reportTotal" class="total-pill">Total Spent: 0</div></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Date</th><th>Buyer</th><th>Spent</th><th>Remarks</th></tr></thead><tbody id="reportBody"></tbody></table></div></div>
+    </section>
+
+    <section id="view-settings" class="view">
+      <div class="page-head"><div><h1>Settings & Data</h1><p>Local privacy, backup, restore and application information.</p></div></div>
+      <div class="settings-grid"><article class="panel"><h2>Privacy</h2><p class="privacy-note">Your data is stored locally on this device. This application does not send inventory data to a server and contains no analytics or telemetry.</p><p class="muted">Clearing browser/app storage can permanently remove local data. Keep regular JSON backups.</p></article><article class="panel"><h2>Data tools</h2><div class="stack"><button class="btn" id="settingsBackup">Backup Data</button><button class="btn" id="settingsRestore">Restore Data</button><button class="btn danger" id="settingsClear">Clear All Data</button></div></article><article class="panel"><h2>Offline / PWA</h2><p>When served from HTTPS or localhost, the service worker caches the application shell for offline loading. Install it from the browser's Add to Home Screen / Install App action.</p><p class="muted">XLSX export is implemented with a dependency-free local ZIP/XLSX writer fallback so export remains functional offline. The app can also use a vendored SheetJS build if you add <code>xlsx.full.min.js</code> beside this file.</p></article><article class="panel"><h2>Packaging</h2><p>Run locally with any static server. Deploy the folder to GitHub Pages or another static host. The same web app can later be wrapped with Capacitor; iOS distribution requires Apple's signing/provisioning process.</p></article></div>
+    </section>
+  </main>
+  <footer class="brand-footer">
+    <div class="creator-block">
+      <div class="creator-name">INVA · Built by <strong>MD. Ikramul Islam Siddique Porosh</strong></div>
+      <a href="tel:+8801672896992" class="creator-phone">+880 1672-896992</a>
+    </div>
+    <div class="social-links" aria-label="Porosh social links">
+      <a class="social social-web" href="https://rjporosh.github.io/" target="_blank" rel="noopener" aria-label="Portfolio" title="Portfolio">⌂</a>
+      <a class="social social-linkedin" href="https://www.linkedin.com/in/md-ikramul-islam-siddique-porosh-4393b333a" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">in</a>
+      <a class="social social-facebook" href="https://www.facebook.com/iamrjporosh" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">f</a>
+      <a class="social social-youtube" href="https://www.youtube.com/@mdikramulislamsiddiqueporosh" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">▶</a>
+    </div>
+  </footer>
+</div>
+
+<dialog id="productDialog"><form method="dialog" id="productForm"><h2 id="productDialogTitle">Add Product</h2><label>Product name<input id="productNameInput" class="input" maxlength="80" required autofocus></label><div class="dialog-actions"><button class="btn" value="cancel">Cancel</button><button class="btn primary" id="productSaveBtn" value="default">Save</button></div></form></dialog>
+<dialog id="transactionDialog"><form method="dialog" id="transactionForm"><h2 id="transactionDialogTitle">Add Transaction</h2><input type="hidden" id="transactionId"><label>Date<input id="transactionDate" type="date" required></label><label>Buyer<input id="transactionBuyer" class="input" maxlength="120" placeholder="Buyer"></label><label>Spent<input id="transactionSpent" type="number" inputmode="decimal" step="any" min="0" required></label><label>Remarks<textarea id="transactionRemarks" maxlength="500" placeholder="Remarks"></textarea></label><div class="dialog-actions"><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="default">Save</button></div></form></dialog>
+<dialog id="confirmDialog"><form method="dialog"><h2 id="confirmTitle">Confirm</h2><p id="confirmMessage"></p><div class="dialog-actions"><button class="btn" value="cancel">Cancel</button><button class="btn danger" id="confirmOk" value="default">Confirm</button></div></form></dialog>
+<input type="file" id="restoreInput" accept="application/json,.json" hidden>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>

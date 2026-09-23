@@ -1,0 +1,633 @@
+MASTER PROMPT — OFFLINE INVENTORY TAB MANAGER
+
+Build a complete production-ready offline-first Inventory Management web application.
+
+IMPORTANT:
+This must be implemented as a client-side application using:
+
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- IndexedDB
+- SheetJS for XLSX import/export if needed
+
+Do NOT use:
+- React
+- Angular
+- Vue
+- Node.js runtime
+- .NET
+- PHP
+- Python backend
+- SQL database
+- Firebase
+- Supabase
+- REST API
+- Authentication server
+- Any backend server
+
+The application must work fully offline after the application assets are loaded.
+
+The application should be mobile-friendly and desktop-friendly.
+
+==================================================
+1. CORE CONCEPT
+==================================================
+
+The application is an Inventory/Product tab based transaction manager.
+
+The reference UI contains multiple product tabs such as:
+
+- Drinking Water
+- Biscuit Horli Plus Wel Food
+- Biscuit Oval Wel Food
+- Biscuit Pistachio Wel Food
+- Munchy Luxas
+
+Each product/tab contains its own transaction table.
+
+Every newly created product must automatically create a new independent sheet/tab with the following columns:
+
+1. Date
+2. Buyer
+3. Spent
+4. Remarks
+
+Example:
+
+Date        Buyer              Spent      Remarks
+1/2/2026    Nizam Sir Room       2        1 Gust 1 Our Side
+2/2/2026    GAP Buyer           12        1 Gust 2 Marchent
+2/2/2026    Korean              10        3 Gust 1 Our Side
+2/2/2026    Marubini Buyer      19        5 Buyer 7 Our Top Head
+
+The exact column names should be:
+
+Date
+Buyer
+Spent
+Remarks
+
+==================================================
+2. PRODUCT/TAB MANAGEMENT
+==================================================
+
+Provide a clear "Add Product" button.
+
+When the user clicks Add Product:
+
+1. Ask for Product Name.
+2. Validate that it is not empty.
+3. Prevent duplicate product names.
+4. Create a unique product ID.
+5. Create a new product tab.
+6. Create an empty transaction collection for that product.
+7. Immediately display the new tab.
+8. The new tab must automatically contain the standard columns:
+
+Date | Buyer | Spent | Remarks
+
+Allow:
+
+- Add Product
+- Rename Product
+- Delete Product
+- Switch between products
+- Search products if the number of tabs becomes large
+
+Before deleting a product, require confirmation.
+
+Deleting a product must clearly warn that all transactions belonging to that product will be deleted.
+
+==================================================
+3. TRANSACTION MANAGEMENT
+==================================================
+
+Inside every product tab provide:
+
+- Add Transaction
+- Edit Transaction
+- Delete Transaction
+
+Transaction fields:
+
+Date
+Buyer
+Spent
+Remarks
+
+Date should use a proper date input.
+
+Spent must be numeric.
+
+Buyer and Remarks are text.
+
+Support keyboard-friendly desktop input and touch-friendly mobile input.
+
+Allow sorting by date.
+
+Allow newest/oldest date ordering.
+
+Show total Spent for the currently selected product.
+
+Example:
+
+Total Spent: 1,245
+
+==================================================
+4. DATA STORAGE
+==================================================
+
+Use IndexedDB as the primary persistent local database.
+
+Do NOT use localStorage as the primary database.
+
+Database structure should be logically separated into:
+
+Products
+Transactions
+
+Each transaction must reference its product using productId.
+
+Example transaction:
+
+{
+    id,
+    productId,
+    date,
+    buyer,
+    spent,
+    remarks,
+    createdAt,
+    updatedAt
+}
+
+Data must persist after:
+
+- browser refresh
+- browser restart
+- device restart
+
+The application must work without internet after the initial assets are available.
+
+==================================================
+5. CUSTOM REPORT / VIEW
+==================================================
+
+Create a dedicated "Reports" or "Custom View" section.
+
+The user must be able to select:
+
+A. All Products
+
+OR
+
+B. One or more selected Products
+
+OR
+
+C. One specific Product
+
+The user must also be able to specify:
+
+From Date
+To Date
+
+The system must then display only matching transactions.
+
+Example:
+
+Products:
+[All]
+or
+[Drinking Water]
+[Biscuit Oval]
+[Biscuit Pistachio]
+
+From Date:
+01/02/2026
+
+To Date:
+28/02/2026
+
+Generate Report.
+
+The report should show:
+
+Product
+Date
+Buyer
+Spent
+Remarks
+
+Also show:
+
+Total Spent
+
+If multiple products are selected, calculate:
+
+Grand Total Spent
+
+Allow filtering by:
+
+- Product
+- Date range
+- Buyer text search
+
+==================================================
+6. EXPORT
+==================================================
+
+Implement professional XLSX export.
+
+Use SheetJS.
+
+The user must have the following export options:
+
+A. Export Current Product
+
+Export the currently selected product into an XLSX file.
+
+Example filename:
+
+Biscuit_Oval.xlsx
+
+B. Export Selected Products
+
+If multiple products are selected, create one XLSX workbook.
+
+Each selected product should become a separate worksheet.
+
+C. Export All Products
+
+Create one XLSX workbook containing every product as a separate worksheet.
+
+D. Export Current Filtered Report
+
+Export only the transactions currently visible after applying:
+
+- product selection
+- date range
+- buyer search
+
+The generated workbook must contain clean headers:
+
+Date
+Buyer
+Spent
+Remarks
+
+Add a total row where appropriate.
+
+Do not export unnecessary UI fields.
+
+==================================================
+7. EXCEL WORKBOOK STRUCTURE
+==================================================
+
+For "Export All Products":
+
+Workbook example:
+
+Inventory_Report.xlsx
+
+Worksheets:
+
+Drinking Water
+Biscuit Horli Plus
+Biscuit Oval
+Biscuit Pistachio
+Munchy Luxas
+
+Each worksheet contains:
+
+Date | Buyer | Spent | Remarks
+
+At the bottom include:
+
+Total Spent
+
+For multi-product filtered reports, optionally provide:
+
+Summary
+
+with:
+
+Product
+Transaction Count
+Total Spent
+
+==================================================
+8. BACKUP AND RESTORE
+==================================================
+
+Because this is an offline IndexedDB application, implement complete backup/restore.
+
+Provide:
+
+Backup Data
+Restore Data
+
+Backup should export all products and transactions into a JSON file.
+
+Example:
+
+inventory-backup-2026-09-23.json
+
+Restore should allow the user to select a JSON backup file and restore the complete application data.
+
+Before restore:
+
+Ask for confirmation.
+
+Provide safe validation so malformed JSON does not corrupt existing data.
+
+Also provide:
+
+Clear All Data
+
+with a strong confirmation dialog.
+
+==================================================
+9. UI/UX
+==================================================
+
+Create a clean professional inventory-management interface inspired by the provided screenshots.
+
+Desktop:
+
+Horizontal product tabs.
+
+Mobile:
+
+Horizontally scrollable product tab bar.
+
+Do not allow the entire page to become unusable because of too many tabs.
+
+If there are many products, provide product search.
+
+Use responsive layout.
+
+The transaction table must:
+
+- horizontally scroll on small screens
+- remain readable
+- have sticky headers if practical
+- provide comfortable touch targets
+- work on Android and iPhone/iPad browsers
+
+Provide:
+
+Dashboard
+Products/Tabs
+Reports
+Backup/Restore
+Settings
+
+Keep the interface simple.
+
+Do not over-design it.
+
+The primary goal is speed and usability.
+
+==================================================
+10. OFFLINE REQUIREMENT
+==================================================
+
+The application must be offline-first.
+
+Do NOT depend on:
+
+- Tailwind CDN
+- Bootstrap CDN
+- external fonts
+- external JavaScript libraries at runtime
+
+If Tailwind is used, compile/package the required CSS locally.
+
+If SheetJS is used, package the library locally so XLSX export works offline.
+
+All required application assets must be locally available.
+
+==================================================
+11. PWA
+==================================================
+
+Make the application installable as a Progressive Web App.
+
+Provide:
+
+manifest.json
+service-worker.js
+
+The application should support:
+
+- Add to Home Screen
+- offline loading
+- standalone display
+- app icon
+- splash/background configuration where supported
+
+Do not require an internet connection after the initial installation.
+
+==================================================
+12. SECURITY / PRIVACY
+==================================================
+
+This is a local-first application.
+
+Do not send inventory data to any server.
+
+Do not include analytics.
+
+Do not include telemetry.
+
+Do not expose data to third-party services.
+
+Clearly indicate in Settings:
+
+"Your data is stored locally on this device."
+
+Also warn users that clearing browser/app storage without a backup can remove data.
+
+==================================================
+13. OPTIONAL APP PACKAGING
+==================================================
+
+Keep the core application completely independent from any framework.
+
+The same web application should later be capable of being wrapped using Capacitor or another WebView wrapper for Android/iOS.
+
+Do not add Capacitor dependencies to the core web application.
+
+Provide a short README section explaining:
+
+How to run locally.
+
+How to deploy as a static website.
+
+How to install as PWA.
+
+How the same web app can later be wrapped into Android APK.
+
+Explain that iOS IPA distribution requires Apple's signing/provisioning process.
+
+==================================================
+14. CODE QUALITY
+==================================================
+
+Organize the code cleanly.
+
+Use modular Vanilla JavaScript.
+
+Avoid one gigantic function.
+
+Use clear functions such as:
+
+initDatabase()
+createProduct()
+renameProduct()
+deleteProduct()
+getProducts()
+createTransaction()
+updateTransaction()
+deleteTransaction()
+getTransactions()
+filterTransactions()
+generateReport()
+exportCurrentProduct()
+exportSelectedProducts()
+exportAllProducts()
+exportFilteredReport()
+backupDatabase()
+restoreDatabase()
+
+Handle errors properly.
+
+No silent failures.
+
+Show user-friendly error messages.
+
+==================================================
+15. DATA VALIDATION
+==================================================
+
+Validate:
+
+Product name:
+- required
+- unique
+
+Date:
+- required
+- valid date
+
+Spent:
+- required
+- numeric
+- allow decimal values
+
+Buyer:
+- optional or required depending on UX, but do not block reasonable data entry unnecessarily
+
+Remarks:
+- optional
+
+Prevent accidental duplicate submissions.
+
+==================================================
+16. PERFORMANCE
+==================================================
+
+The application should remain responsive with thousands of transactions.
+
+Do not render thousands of DOM rows unnecessarily.
+
+Use pagination or efficient rendering when required.
+
+IndexedDB queries should be efficient.
+
+==================================================
+17. ACCESSIBILITY
+==================================================
+
+Use:
+
+- semantic HTML
+- labels
+- keyboard navigation
+- visible focus states
+- accessible buttons
+- accessible dialogs
+
+Do not rely solely on color to communicate status.
+
+==================================================
+18. DELIVERABLE
+==================================================
+
+Generate a complete working project.
+
+At minimum provide:
+
+index.html
+styles.css
+app.js
+manifest.json
+service-worker.js
+
+and any locally required SheetJS asset.
+
+If practical, keep the application deployable as a static website.
+
+Do not give pseudo-code.
+
+Do not omit important implementation sections.
+
+Do not replace functionality with placeholders.
+
+All buttons must actually work.
+
+All CRUD operations must actually work.
+
+IndexedDB persistence must actually work.
+
+XLSX export must actually work.
+
+Backup/restore must actually work.
+
+PWA installation must actually work.
+
+==================================================
+19. FINAL TESTING
+==================================================
+
+Before declaring the project complete, test the following logically:
+
+1. Create Drinking Water.
+2. Create Biscuit Oval.
+3. Create Biscuit Pistachio.
+4. Add transactions to each.
+5. Refresh the browser.
+6. Verify data remains.
+7. Rename a product.
+8. Edit a transaction.
+9. Delete a transaction.
+10. Delete a product.
+11. Generate a date-range report.
+12. Generate an all-product report.
+13. Export current product to XLSX.
+14. Export all products to XLSX.
+15. Backup JSON.
+16. Clear/modify test data.
+17. Restore JSON.
+18. Verify restored data.
+19. Test mobile responsive UI.
+20. Test offline behavior.
+21. Test PWA installation.
+
+Fix all discovered issues before presenting the final implementation.
+
+IMPORTANT:
+Do not merely explain how to build it.
+Actually build the complete application/code.
